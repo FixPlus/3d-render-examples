@@ -134,10 +134,14 @@ EXAMPLE_MAIN_HEADER(Just Attributes)
                                                    APITest::VertexLayout::Attribute::RGBA32SF,
                                                    APITest::VertexLayout::Attribute::RGB32SF};
 
-    tetraLayout.vertexLayout.vertexShader = renderer->createShaderProgram({use_vulkan ? "just_attributes/attributes.vert.spv" : "just_attributes/attributes.vert",
+    tetraLayout.vertexLayout.vertexShader = renderer->createShaderProgram(
+		    {use_vulkan ? ROOT_SHADERS_DIR "just_attributes/attributes.vert.spv" : 
+		                     ROOT_SHADERS_DIR "just_attributes/attributes.vert",
                                                        APITest::ShaderStage::VERTEX});
-    tetraLayout.fragmentLayout.fragmentShader = renderer->createShaderProgram({use_vulkan ? "just_attributes/attributes.frag.spv" : "just_attributes/attributes.frag",
-                                                         APITest::ShaderStage::FRAGMENT});
+    tetraLayout.fragmentLayout.fragmentShader = renderer->createShaderProgram(
+		    {use_vulkan ? ROOT_SHADERS_DIR "just_attributes/attributes.frag.spv" : 
+		                     ROOT_SHADERS_DIR "just_attributes/attributes.frag",
+                                                       APITest::ShaderStage::FRAGMENT});
 
     // In this example we render in 3D space, so we will need depth testing in order to proper "sort" object by depth.
     // Try to disable to see difference.

@@ -5,7 +5,7 @@
 #ifndef RENDERAPITEST_OGLFRAMEBUFFER_H
 #define RENDERAPITEST_OGLFRAMEBUFFER_H
 
-#include <Gl/glew.h>
+#include <GL/glew.h>
 
 namespace APITest{
 

@@ -66,10 +66,14 @@ public:
                                                   APITest::VertexLayout::Attribute::RGB32SF,
                                                   APITest::VertexLayout::Attribute::RG32SF,};
         layout.descriptorsLayout = descriptorSetLayout;
-        layout.vertexLayout.vertexShader = renderer->createShaderProgram({use_vulkan ? "texture/texture.vert.spv" : "texture/texture.vert",
-                                                                               APITest::ShaderStage::VERTEX});
-        layout.fragmentLayout.fragmentShader = renderer->createShaderProgram({use_vulkan ? "texture/texture.frag.spv" : "texture/texture.frag",
-                                                                                   APITest::ShaderStage::FRAGMENT});
+        layout.vertexLayout.vertexShader = 
+		renderer->createShaderProgram({use_vulkan ? ROOT_SHADERS_DIR "texture/texture.vert.spv" : 
+				                                     ROOT_SHADERS_DIR "texture/texture.vert",
+                                                            APITest::ShaderStage::VERTEX});
+        layout.fragmentLayout.fragmentShader = 
+		renderer->createShaderProgram({use_vulkan ? ROOT_SHADERS_DIR "texture/texture.frag.spv" : 
+				                                     ROOT_SHADERS_DIR "texture/texture.frag",
+                                                            APITest::ShaderStage::FRAGMENT});
 
         pipeline = renderer->createGraphicsPipeline(layout);
     };

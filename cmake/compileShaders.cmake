@@ -6,7 +6,7 @@ function(compileShader SHADER_NAME SHADER_DIR OUTPUT_DIR)
 endfunction(compileShader)
 
 function(compileShaders SHADER_DIR OUTPUT_DIR DEPENDENT_TARGET INSTALL_DIR)
-    find_program(GLSL NAMES glslc.exe glslc PATHS $ENV{VK_SDK_PATH}/Bin)
+	find_program(GLSL NAMES glslc.exe glslc PATHS $ENV{VK_SDK_PATH}/Bin $ENV{VULKAN_SDK}/bin)
 
     if(GLSL-NOTFOUND)
         message("GLSL compiler not found - shader compilation skipped")

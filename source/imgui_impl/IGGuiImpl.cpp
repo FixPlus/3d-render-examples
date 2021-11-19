@@ -100,7 +100,7 @@ namespace APITest{
 
         auto fontFilename = "Roboto-Medium.ttf";
 
-        io.Fonts->AddFontFromFileTTF(fontFilename, 16.0f, nullptr, io.Fonts->GetGlyphRangesCyrillic());
+        //io.Fonts->AddFontFromFileTTF(fontFilename, 16.0f, nullptr, io.Fonts->GetGlyphRangesCyrillic());
 
         io.Fonts->GetTexDataAsRGBA32(&fontData, &texWidth, &texHeight);
         ImageDesc fontTextureDesc{};

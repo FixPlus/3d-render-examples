@@ -9,6 +9,7 @@
 #include "VulkanDevice.h"
 #include "VulkanQueueManager.h"
 #include <cassert>
+#include <cstring>
 
 APITest::VulkanBuffer::~VulkanBuffer() {
     if(memoryManager != VK_NULL_HANDLE){

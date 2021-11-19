@@ -17,9 +17,11 @@ EXAMPLE_MAIN_HEADER(Basic)
 
     // Shaders - programmable stages of 3D graphics pipeline. They are executed on GPU on multiple parallel cores.
     pipelineLayout.vertexLayout.vertexShader = renderer->createShaderProgram(
-            {use_vulkan ? "basic/simple.vert.spv" : "basic/simple.vert", APITest::ShaderStage::VERTEX});
+            {use_vulkan ? ROOT_SHADERS_DIR "basic/simple.vert.spv" : ROOT_SHADERS_DIR "basic/simple.vert", 
+	                  APITest::ShaderStage::VERTEX});
     pipelineLayout.fragmentLayout.fragmentShader = renderer->createShaderProgram(
-            {use_vulkan ? "basic/simple.frag.spv" : "basic/simple.frag", APITest::ShaderStage::FRAGMENT});
+            {use_vulkan ? ROOT_SHADERS_DIR "basic/simple.frag.spv" : ROOT_SHADERS_DIR "basic/simple.frag", 
+	                  APITest::ShaderStage::FRAGMENT});
 
     // createGraphicsPipeline() - retrieves handle for a API-defined pipeline object.
     auto pipeline = renderer->createGraphicsPipeline(pipelineLayout);

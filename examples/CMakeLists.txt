@@ -25,19 +25,16 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 foreach(EXAMPLE ${EXAMPLES})
     buildExample(${EXAMPLE})
 
-    add_custom_target(${EXAMPLE}_SHADER_DIR ALL
-            COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/${EXAMPLE})
-
-    add_dependencies(${EXAMPLE} ${EXAMPLE}_SHADER_DIR)
-    compileShaders(${CMAKE_CURRENT_SOURCE_DIR}/${EXAMPLE}/shaders/glsl-v ${PROJECT_BINARY_DIR}/${EXAMPLE} ${EXAMPLE} ${CMAKE_INSTALL_PREFIX}/${EXAMPLE})
+    file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/shaders/${EXAMPLE})
+    compileShaders(${CMAKE_CURRENT_SOURCE_DIR}/${EXAMPLE}/shaders/glsl-v ${PROJECT_BINARY_DIR}/shaders/${EXAMPLE} ${EXAMPLE} ${CMAKE_INSTALL_PREFIX}/shaders/${EXAMPLE})
 
     file(GLOB OPENGL_SHADERS ${CMAKE_CURRENT_SOURCE_DIR}/${EXAMPLE}/shaders/glsl/*.*)
 
     foreach(OGL_SHADER IN LISTS OPENGL_SHADERS)
-        configure_file(${OGL_SHADER} ${PROJECT_BINARY_DIR}/${EXAMPLE} COPYONLY)
+        configure_file(${OGL_SHADER} ${PROJECT_BINARY_DIR}/shaders/${EXAMPLE} COPYONLY)
     endforeach()
 
-    install(FILES ${OPENGL_SHADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/${EXAMPLE})
+    install(FILES ${OPENGL_SHADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/shaders/${EXAMPLE})
 endforeach()
 
 

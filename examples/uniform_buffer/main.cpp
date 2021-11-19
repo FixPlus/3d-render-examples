@@ -114,10 +114,14 @@ public:
         tetraLayout.vertexLayout.perVertexAttribute = {APITest::VertexLayout::Attribute::RGBA32SF,
                                                        APITest::VertexLayout::Attribute::RGBA32SF};
 
-        tetraLayout.vertexLayout.vertexShader = renderer->createShaderProgram({APITest::isVulkan(renderer.get()) ? "uniform_buffer/ubo.vert.spv" : "uniform_buffer/ubo.vert",
+        tetraLayout.vertexLayout.vertexShader = renderer->createShaderProgram(
+			{APITest::isVulkan(renderer.get()) ? ROOT_SHADERS_DIR "uniform_buffer/ubo.vert.spv" : 
+			                                        ROOT_SHADERS_DIR "uniform_buffer/ubo.vert",
                                                                                APITest::ShaderStage::VERTEX});
-        tetraLayout.fragmentLayout.fragmentShader = renderer->createShaderProgram({APITest::isVulkan(renderer.get()) ? "uniform_buffer/ubo.frag.spv" : "uniform_buffer/ubo.frag",
-                                                                                   APITest::ShaderStage::FRAGMENT});
+        tetraLayout.fragmentLayout.fragmentShader = renderer->createShaderProgram(
+			{APITest::isVulkan(renderer.get()) ? ROOT_SHADERS_DIR "uniform_buffer/ubo.frag.spv" : 
+			                                        ROOT_SHADERS_DIR "uniform_buffer/ubo.frag",
+                                                                               APITest::ShaderStage::FRAGMENT});
 
         // In this example we render in 3D space, so we will need depth testing in order to proper "sort" object by depth.
         // Try to disable to see difference.

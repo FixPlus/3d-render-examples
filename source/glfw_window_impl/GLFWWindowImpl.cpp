@@ -293,6 +293,7 @@ void APITest::GLFWWindowImpl::setCallbacks() {
     glfwSetMouseButtonCallback(instance_,mouseInput);
     glfwSetScrollCallback(instance_, scrollInput);
     glfwSetCharCallback(instance_, charInput);
+    glfwSetErrorCallback(errorHandle);
 }
 
 void APITest::GLFWWindowImpl::mouseInput(GLFWwindow *window, int button, int action, int mods) {

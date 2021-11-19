@@ -19,7 +19,10 @@ IF(WIN32)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/lib/win/GLEW/bin/Release/x64/glew32.dll DESTINATION ${CMAKE_INSTALL_PREFIX})
     file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/lib/win/GLEW/bin/Release/x64/glew32.dll DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 ELSE()
-    message(FATAL_ERROR "Linux build configuration is not supported yet")
+    find_package(GLEW REQUIRED)
+    set(OpenGL_LIBRARY ${OPENGL_LIBRARIES})
+    set(GLEW_LIBRARY ${GLEW_LIBRARIES})
+    include_directories($(GLEW_INCLUDE_DIRS))
 ENDIF()
 
 
@@ -31,8 +34,8 @@ IF(WIN32)
     ENDIF()
     message(STATUS "Found GLFW: " ${GLFW_LIBRARY})
 ELSE()
-    # TODO
-    message(FATAL_ERROR "Not supported linking of GLFW on this platform!")
+    find_package(glfw3 3.3 REQUIRED)
+    set(GLFW_LIBRARY glfw)
 ENDIF()
 
 
@@ -50,12 +53,9 @@ set(PROJECT_LIBS ${RENDER_API_LIB})
 
 add_subdirectory(examples)
 
-IF(NOT glfw_FOUND)
-    IF(WIN32)
-        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/lib/win/GLFW/glfw3.dll glfw3.dll COPYONLY)
-        install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/lib/win/GLFW/glfw3.dll DESTINATION ${CMAKE_INSTALL_PREFIX})
-    ELSE()
-        # TODO
-        message(FATAl_ERROR "Other platforms don't contain bundled glfw lib yet!")
-    ENDIF()
+IF(WIN32)
+  IF(NOT glfw_FOUND)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/lib/win/GLFW/glfw3.dll glfw3.dll COPYONLY)
+    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/lib/win/GLFW/glfw3.dll DESTINATION ${CMAKE_INSTALL_PREFIX})
+  ENDIF()
 ENDIF()

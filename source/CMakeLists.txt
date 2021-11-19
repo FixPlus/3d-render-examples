@@ -9,6 +9,10 @@ file(GLOB IMGUI_IMPL_SOURCES imgui_impl/*.h imgui_impl/*.cpp)
 
 file(GLOB IMGUI_SOURCE ${PROJECT_SOURCE_DIR}/external/imgui/*.cpp ${PROJECT_SOURCE_DIR}/external/imgui/*.h)
 
+if(UNIX)
+  add_compile_options(-fPIC)
+endif()
+
 add_library(IMGUI_SOURCE_LIB OBJECT ${IMGUI_SOURCE})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/..)
@@ -19,12 +23,10 @@ add_library(IMGUI_IMPL_LIB OBJECT ${IMGUI_IMPL_SOURCES}   ${COMMON_HEADERS})
 
 add_library(${RENDER_API_LIB} SHARED ${RENDER_API_SOURCES})
 
+
 include(../cmake/compileShaders.cmake)
 
-add_custom_target(INTERNAL_SHADER_DIR ALL
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/internal)
-
-add_dependencies(${RENDER_API_LIB} INTERNAL_SHADER_DIR)
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/internal)
 compileShaders(${CMAKE_CURRENT_SOURCE_DIR}/internal_shaders ${PROJECT_BINARY_DIR}/internal ${RENDER_API_LIB} ${CMAKE_INSTALL_PREFIX}/internal)
 file(GLOB INTERNAL_SHADERS internal_shaders/*.frag internal_shaders/*.vert)
 

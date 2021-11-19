@@ -24,6 +24,7 @@ static void printHelp(){
               << "    --help : print help" << std::endl;
 }
 
+#define ROOT_SHADERS_DIR "shaders/"
 class Camera{
     float fov = 60.0f;
     bool flipY_;
