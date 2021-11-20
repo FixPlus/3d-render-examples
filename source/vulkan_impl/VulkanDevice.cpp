@@ -20,9 +20,17 @@ APITest::VulkanDevice::VulkanDevice(const APITest::VulkanRenderImpl *parent, boo
 
     queryPhysicalDeviceInfo();
 
-    if(auto err = (createLogicalDevice(useSwapChain) - VK_SUCCESS))
-        throw std::runtime_error("[ERROR][VkAPI]: failed to create logical device. Err code: " +
-                                        std::to_string(err + VK_SUCCESS));
+    for(int i = 0; i < availableDevices.size(); i++){
+        try{
+            createLogicalDevice(useSwapChain);
+        }
+        catch (std::runtime_error& e){
+            if(i == availableDevices.size() - 1)
+                throw e;
+
+            continue;
+        }
+    }
 
 }
 
@@ -158,9 +166,7 @@ bool APITest::VulkanDevice::createLogicalDevice(bool useSwapChain) {
         for (const char* enabledExtension : deviceExtensions)
         {
             if (!extensionSupported(enabledExtension)) {
-                std::cerr <<
-                ("Enabled device extension \"" + std::string(enabledExtension) + "\" is not present at device level\n")
-                << std::endl;
+                throw std::runtime_error("[VULKAN][ERROR] device has no support for enabled extension " + std::string(enabledExtension));
             }
         }
 
@@ -171,7 +177,7 @@ bool APITest::VulkanDevice::createLogicalDevice(bool useSwapChain) {
     VkResult result = vkCreateDevice(physicalDevice_, &deviceCreateInfo, nullptr, &logicalDevice_);
     if (result != VK_SUCCESS)
     {
-        return result;
+        throw std::runtime_error("[VULKAN][ERROR] failed to create device");
     }
 
     return result;

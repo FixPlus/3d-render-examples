@@ -38,7 +38,7 @@ namespace APITest {
         VmaAllocationCreateInfo allocInfo = {};
         allocInfo.usage = type == MemoryType::GPU_PRIVATE ? VMA_MEMORY_USAGE_GPU_ONLY : type == MemoryType::HOST_VISIBLE ? VMA_MEMORY_USAGE_CPU_TO_GPU : VMA_MEMORY_USAGE_CPU_ONLY;
         allocInfo.preferredFlags = type == MemoryType::HOST_COHERENT ? (VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_CACHED_BIT) : 0;
-        allocInfo.requiredFlags = type == MemoryType::HOST_VISIBLE || type == MemoryType::HOST_COHERENT ?  VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT : 0;
+        allocInfo.requiredFlags = type == MemoryType::HOST_VISIBLE || type == MemoryType::HOST_COHERENT ?  VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT : VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
         allocInfo.flags = type == MemoryType::HOST_VISIBLE || type == MemoryType::HOST_COHERENT ? VMA_ALLOCATION_CREATE_MAPPED_BIT : 0;
 
         return allocInfo;
@@ -252,7 +252,7 @@ APITest::VulkanBuffer::VulkanBuffer(VulkanMemoryManager const* alloc, APITest::M
     if(type == MemoryType::GPU_PRIVATE)
         usage_ |= VK_BUFFER_USAGE_TRANSFER_DST_BIT;
 
-    VkBufferCreateInfo bufferCI = initializers::bufferCreateInfo(usage, size);
+    VkBufferCreateInfo bufferCI = initializers::bufferCreateInfo(usage_, size);
     bufferCI.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 
@@ -271,7 +271,7 @@ void APITest::VulkanBuffer::push(const void *data, size_t size, size_t offset) {
                         std::to_string(size + offset - (allocationInfo.size)) +
                         " bytes off bounds");
 
-    if(allocationInfo.memoryType | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT){
+    if(allocationInfo.memoryType & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT || allocationInfo.memoryType & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT){
         if(allocationInfo.pMappedData){
             memcpy((char*)allocationInfo.pMappedData + offset, data, size);
         } else{

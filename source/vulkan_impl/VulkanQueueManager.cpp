@@ -52,9 +52,6 @@ void APITest::VulkanQueueManager::copyBuffer(VkBuffer src, VkBuffer dst, VkBuffe
     VkCommandBuffer copyCommand;
     VK_CHECK_RESULT(createPrimaryCommandBuffers(&copyCommand, 1, true));
 
-    VkCommandBufferBeginInfo cmdBufInfo = initializers::commandBufferBeginInfo();
-    VK_CHECK_RESULT(vkBeginCommandBuffer(copyCommand, &cmdBufInfo));
-
     vkCmdCopyBuffer(copyCommand, src, dst, 1, &region);
 
     flush(copyCommand, transferQueue_);

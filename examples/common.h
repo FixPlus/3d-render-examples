@@ -12,7 +12,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "tiny_gltf/stb_image.h"
+#include "common/Model.h"
 
 static void printHelp(){
 
@@ -41,6 +41,9 @@ class Camera{
         perspective = glm::perspective(glm::radians(fov), aspectRatio, zNear,zFar);
         if(flipY_)
             perspective[1][1] *= -1.0f;
+
+        perspective = perspective * glm::rotate(glm::mat4(1.0f), glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
     }
 
     void setCameraSpace() {
@@ -125,9 +128,9 @@ public:
             velocity *= 1.0f - (1.5f) * deltaT / inertia;
 
         glm::vec3 camFront;
-        camFront.x = cos(glm::radians(rotation.x)) * sin(glm::radians(rotation.y));
-        camFront.y = -sin(glm::radians(rotation.x));
-        camFront.z = cos(glm::radians(rotation.x)) * cos(glm::radians(rotation.y));
+        camFront.x = cos(glm::radians(rotation.x)) * sin(glm::radians(rotation.z));
+        camFront.z = -sin(glm::radians(rotation.x));
+        camFront.y = -cos(glm::radians(rotation.x)) * cos(glm::radians(rotation.z));
         camFront = glm::normalize(-camFront);
 
         float acceleration = actingForce * deltaT / inertia;
@@ -139,13 +142,13 @@ public:
         if (keys.down)
             velocity -= camFront * acceleration;
         if (keys.left)
-            velocity -= glm::normalize(glm::cross(camFront, glm::vec3(0.0f, 1.0f, 0.0f))) * acceleration;
+            velocity -= glm::normalize(glm::cross(camFront, glm::vec3(0.0f, 0.0f, 1.0f))) * acceleration;
         if (keys.right)
-            velocity += glm::normalize(glm::cross(camFront, glm::vec3(0.0f, 1.0f, 0.0f))) * acceleration;
+            velocity += glm::normalize(glm::cross(camFront, glm::vec3(0.0f, 0.0f, 1.0f))) * acceleration;
         if (keys.space)
-            velocity -= glm::vec3(0.0f,  1.0f, 0.0f) * acceleration;
+            velocity -= glm::vec3(0.0f,  0.0f, 1.0f) * acceleration;
         if (keys.shift)
-            velocity += glm::vec3(0.0f,  1.0f, 0.0f) * acceleration;
+            velocity += glm::vec3(0.0f,  0.0f, 1.0f) * acceleration;
 
         position += velocity * (float)deltaT;
 
@@ -182,7 +185,7 @@ public:
     }
 
     void mouseMove(double dx, double dy) {
-        rotate(-dy * rotSpeed, dx * rotSpeed, 0.0f);
+        rotate(-dy * rotSpeed, 0.0f, dx * rotSpeed);
     }
 };
 
