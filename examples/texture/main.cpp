@@ -4,6 +4,7 @@
 #include <utility>
 
 #include "common.h"
+#include "stb_image.h"
 
 
 APITest::ImageRef loadTexture(APITest::RenderInterfaceRef const& renderInterface, const char* filename) {
@@ -35,12 +36,12 @@ struct TexturedRectangle {
     };
 
     constexpr static const std::array<Vertex, 6> vertices = {
-            Vertex{{-1.0f, 1.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
-            Vertex{{1.0f, 1.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
-            Vertex{{1.0f, -1.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}},
-            Vertex{{-1.0f, 1.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
-            Vertex{{1.0f, -1.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}},
-            Vertex{{-1.0f, -1.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}},
+            Vertex{{-1.0f, 0.0f, 1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
+            Vertex{{1.0f, 0.0f, 1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
+            Vertex{{1.0f, 0.0f, -1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}},
+            Vertex{{-1.0f, 0.0f, 1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
+            Vertex{{1.0f, 0.0f, -1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}},
+            Vertex{{-1.0f, 0.0f, -1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}},
     };
 
     static std::array<Vertex, 6> dynamicVertices;

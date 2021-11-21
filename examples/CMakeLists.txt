@@ -29,7 +29,7 @@ include_directories(../external/tiny_gltf)
 foreach(EXAMPLE ${EXAMPLES})
     buildExample(${EXAMPLE})
 
-    if(EXISTS CMAKE_CURRENT_SOURCE_DIR}/${EXAMPLE}/shaders)
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${EXAMPLE}/shaders)
         file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/shaders/${EXAMPLE})
         compileShaders(${CMAKE_CURRENT_SOURCE_DIR}/${EXAMPLE}/shaders/glsl-v ${PROJECT_BINARY_DIR}/shaders/${EXAMPLE} ${EXAMPLE} ${CMAKE_INSTALL_PREFIX}/shaders/${EXAMPLE})
 

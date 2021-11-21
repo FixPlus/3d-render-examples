@@ -26,7 +26,7 @@ layout (location = 0) out vec4 outFragColor;
 
 void main() {
     vec4 outColor = texture(colorMap, inUV) * material.baseColorFactor;
-    vec3 lightDir = normalize(vec3(1.0, 0.0, 0.5));
+    vec3 lightDir = normalize(vec3(0.0, 0.5, -1.0));
     float diffuse = (dot(lightDir, inNormal) + 1.0f) / 2.0f;
 
     outFragColor = outColor * diffuse;

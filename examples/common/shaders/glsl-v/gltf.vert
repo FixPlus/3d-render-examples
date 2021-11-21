@@ -26,7 +26,7 @@ layout (binding = 1) uniform PrimitiveTransform{
 
 void main() {
     mat4 localCameraSpace = camera.cameraSpace * transform.local;
-    outNormal = vec3(localCameraSpace * vec4(inNormal, 0.0));
+    outNormal = vec3(transform.local * vec4(inNormal, 0.0));
 
     outColor = inColor;
     outUV = inUV;
