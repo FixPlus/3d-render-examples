@@ -7,6 +7,7 @@
 
 #include "RenderInterface.h"
 #include "WindowInterface.h"
+#include <stdexcept>
 
 namespace APITest{
 

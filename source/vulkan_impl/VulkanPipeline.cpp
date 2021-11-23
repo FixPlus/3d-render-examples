@@ -11,6 +11,7 @@
 #include "vulkan_impl/VulkanRenderPass.h"
 #include "vulkan_impl/VulkanDescriptorManager.h"
 #include <glm/glm.hpp>
+#include <array>
 
 APITest::VulkanPipelineManager::VulkanPipelineManager(APITest::VulkanRenderImpl *parent): parent_(parent) {
     VkPipelineCacheCreateInfo pipelineCacheCreateInfo = {};

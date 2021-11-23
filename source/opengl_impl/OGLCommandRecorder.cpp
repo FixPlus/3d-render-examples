@@ -8,6 +8,7 @@
 #include "OGLDescriptors.h"
 
 #include <cassert>
+#include <stdexcept>
 
 void APITest::OGLCommandRecorder::bindPipeline(APITest::Pipeline *pipeline) {
     if(auto* oglPipeline = dynamic_cast<OGLPipeline*>(pipeline)){

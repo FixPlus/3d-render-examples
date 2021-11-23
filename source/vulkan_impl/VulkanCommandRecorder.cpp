@@ -7,6 +7,7 @@
 #include "vulkan_impl/VulkanMemoryManagaer.h"
 #include "vulkan_impl/VulkanDescriptorManager.h"
 #include <cassert>
+#include <stdexcept>
 
 void APITest::VulkanCommandRecorder::bindPipeline(APITest::Pipeline *pipeline) {
     currentPipeline = dynamic_cast<VulkanPipeline*>(pipeline);

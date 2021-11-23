@@ -37,7 +37,7 @@ namespace APITest{
 
 
     class StatisticsRecorder{
-        using TimeStamp = std::chrono::time_point<std::chrono::system_clock, std::chrono::duration<double>>;
+        using TimeStamp = std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::duration<double>>;
         template<typename T>
         using MetricsContainer = std::map<std::string, std::pair<bool,T>>;
 
@@ -76,7 +76,7 @@ namespace APITest{
         void addTimeStampInternal_(std::string const& blockName){
             auto[currentFrame, currentChild] = frameBlockStack.top();
 
-            auto tick = std::chrono::high_resolution_clock::now();
+            TimeStamp tick = std::chrono::high_resolution_clock::now();
             if(currentFrame->childs.size() <= currentChild){
                 currentFrame->childs.emplace_back(std::make_unique<FrameBlock>(blockName));
             } else {

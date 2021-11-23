@@ -12,6 +12,7 @@
 #include <glm/detail/type_quat.hpp>
 #include <stack>
 #include "RenderInterface.h"
+#include <stdexcept>
 
 class Camera;
 

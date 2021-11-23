@@ -6,6 +6,7 @@
 #define RENDERAPITEST_OGLDEBUG_H
 
 #include <GL/glew.h>
+#include <stdexcept>
 
 namespace APITest{
 

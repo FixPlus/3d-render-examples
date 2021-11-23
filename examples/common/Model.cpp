@@ -261,7 +261,7 @@ void Examples::MMesh::resetPipelines(APITest::RenderInterface* renderer) {
         APITest::DescriptorSetLayoutRef primitiveLayout = renderer->createDescriptorLayout(uniforms);
         layout.descriptorsLayout = primitiveLayout;
         APITest::PipelineRef pipeline = renderer->createGraphicsPipeline(layout);
-        perPrimitivePipeline.push_back({std::move(pipeline), {primitiveLayout, std::map<size_t, APITest::UniformDescriptorSetRef>{}}});
+        perPrimitivePipeline.push_back({std::move(pipeline), std::pair<APITest::DescriptorSetLayoutRef,std::map<size_t,APITest::UniformDescriptorSetRef>>{primitiveLayout, std::map<size_t, APITest::UniformDescriptorSetRef>{}}});
     }
 }
 

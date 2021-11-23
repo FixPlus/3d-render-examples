@@ -182,7 +182,7 @@ namespace APITest {
         }
 
         createInfo.components = { VK_COMPONENT_SWIZZLE_R, VK_COMPONENT_SWIZZLE_G, VK_COMPONENT_SWIZZLE_B, VK_COMPONENT_SWIZZLE_A };
-        createInfo.subresourceRange = { getAspect(createInfo.format), 0, 1, 0, 1 };
+        createInfo.subresourceRange = { (VkImageAspectFlags)getAspect(createInfo.format), 0, 1, 0, 1 };
 
         VK_CHECK_RESULT(vkCreateImageView(memoryManager->device(), &createInfo, nullptr, &defaultImageView_))
     }

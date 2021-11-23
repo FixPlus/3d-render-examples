@@ -7,6 +7,7 @@
 #include "OGLSampler.h"
 #include "OGLBuffer.h"
 #include <GL/glew.h>
+#include <stdexcept>
 
 APITest::UniformDescriptorSetRef
 APITest::OGLDescriptorSetLayout::allocateNewSet(APITest::UniformDescriptor *descriptors, int count) {

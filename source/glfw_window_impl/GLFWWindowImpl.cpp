@@ -3,6 +3,8 @@
 //
 
 #include "GLFWWindowImpl.h"
+#include <stdexcept>
+#include <string>
 
 namespace APITest{
     std::map<GLFWwindow *, GLFWWindowImpl*> GLFWWindowImpl::windowMap;

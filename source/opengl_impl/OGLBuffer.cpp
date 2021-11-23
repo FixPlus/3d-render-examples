@@ -5,6 +5,7 @@
 #include "OGLBuffer.h"
 #include "OGLDebug.h"
 #include <cstring>
+#include <string>
 
 void APITest::OGLBuffer::push(const void *data, size_t size, size_t offset) {
     if(size_ < size + offset)

@@ -13,6 +13,7 @@
 #include "vulkan_impl/VulkanDevice.h"
 #include "vulkan_impl/VulkanSwapChain.h"
 #include <glm/glm.hpp>
+#include <array>
 
 // legacy code, may reuse some of this later
 

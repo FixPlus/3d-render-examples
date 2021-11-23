@@ -5,6 +5,7 @@
 #include "OGLTexture.h"
 #include "OGLDebug.h"
 #include <cassert>
+#include <stdexcept>
 
 static GLenum convertInterfaceTypeToGLTarget(APITest::Image::Type type, uint32_t arrayLayers){
     switch (type) {

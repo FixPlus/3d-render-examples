@@ -3,6 +3,7 @@
 //
 
 #include "OGLPipeline.h"
+#include <stdexcept>
 
 APITest::OGLGraphicsPipeline::OGLGraphicsPipeline(const APITest::GraphicsPipelineLayout &desc): layout_(desc) {
 

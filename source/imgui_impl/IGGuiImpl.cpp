@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include <stack>
+#include <array>
 
 namespace APITest{
     int IGGuiImpl::instanceCounter = 0;

@@ -7,6 +7,7 @@
 
 #include <vulkan/vulkan.h>
 #include "RenderInterface.h"
+#include <algorithm>
 
 namespace APITest{
 
