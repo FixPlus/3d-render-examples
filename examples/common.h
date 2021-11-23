@@ -19,9 +19,12 @@ static void printHelp(){
     std::cout << "Vulkan VS OpenGL test suit." << std::endl
               << "  Usage: example [options]" << std::endl
               << "  Options:" << std::endl
-              << "    -v : Use vulkan backend" << std::endl
-              << "    -ogl : Use OpenGL backend" << std::endl
-              << "    --help : print help" << std::endl;
+              << "    -v     : Use vulkan backend" << std::endl
+              << "    -ogl   : Use OpenGL backend" << std::endl
+              << "    -val   : Enable Vulkan Validation Layer" << std::endl
+              << "    --help : print help" << std::endl
+              << "  Camera Controls: WASD + shift/ctrl for up/down move" << std::endl
+              << "                   Toggle cursor(C) for camera rotation." << std::endl;
 }
 
 #define ROOT_SHADERS_DIR "shaders/"
@@ -99,9 +102,9 @@ public:
         return cameraBuffer;
     }
     glm::vec3 velocity = glm::vec3{0.0f};
-    double inertia = 0.1f;
-    double actingForce = 20.0f;
-    double speed = 5.0f;
+    float inertia = 0.1f;
+    float actingForce = 20.0f;
+    float speed = 5.0f;
 
     glm::mat4 getCameraMatrix() const{
         return perspective * cameraSpace;
@@ -118,19 +121,19 @@ public:
         setPerspective();
     }
 
-    void update(double deltaT){
+    void update(float deltaT){
 
         float currentSpeed = glm::length(velocity);
 
-        if(currentSpeed < 0.1f)
+        if(currentSpeed < 0.01f)
             velocity *= 0.0f;
         else
             velocity *= 1.0f - (1.5f) * deltaT / inertia;
 
         glm::vec3 camFront;
-        camFront.x = cos(glm::radians(rotation.x)) * sin(glm::radians(rotation.z));
-        camFront.z = -sin(glm::radians(rotation.x));
-        camFront.y = -cos(glm::radians(rotation.x)) * cos(glm::radians(rotation.z));
+        camFront.x = glm::cos(glm::radians(rotation.x)) * glm::sin(glm::radians(rotation.z));
+        camFront.z = -glm::sin(glm::radians(rotation.x));
+        camFront.y = -glm::cos(glm::radians(rotation.x)) * glm::cos(glm::radians(rotation.z));
         camFront = glm::normalize(-camFront);
 
         float acceleration = actingForce * deltaT / inertia;
@@ -200,7 +203,7 @@ while(!window->handleEvents() && !example_close) { renderer->render();\
 
 #define EXAMPLE_MAIN_HEADER(EXAMPLE_NAME) int main(int argc, char** argv) { \
     \
-    bool use_vulkan = true;                                                 \
+    bool use_vulkan = true, enable_validation = false;                                                 \
     bool example_close = false;\
     for(auto i = 1; i < argc; ++i){   \
         std::string curArg(argv[i]);  \
@@ -208,6 +211,8 @@ while(!window->handleEvents() && !example_close) { renderer->render();\
             use_vulkan = true; continue;}        \
         if(curArg == "-ogl"){          \
             use_vulkan = false; continue;}      \
+        if(curArg == "-val"){          \
+            enable_validation = true; continue;}      \
         if(curArg == "--help") {      \
             printHelp();              \
             return 0;                 \
@@ -215,9 +220,10 @@ while(!window->handleEvents() && !example_close) { renderer->render();\
         printHelp();                                                 \
         return 0;                     \
     }                                 \
-                                      \
+    if(!use_vulkan && enable_validation)                                    \
+        std::cout << "hint: -val option is Vulkan only." << std::endl;\
     auto window = APITest::createGLFWWindow({1024, 720, use_vulkan ? "Vulkan " #EXAMPLE_NAME : "OpenGL " #EXAMPLE_NAME});\
-    auto renderer = use_vulkan ? APITest::createVulkanAPI(window) :\
+    auto renderer = use_vulkan ? APITest::createVulkanAPI(window, enable_validation) :\
                     APITest::createOpenGLAPI(window);\
 
 

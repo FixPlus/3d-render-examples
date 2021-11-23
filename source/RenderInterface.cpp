@@ -15,8 +15,8 @@ namespace APITest {
         return WindowRef(new GLFWWindowImpl(desc));
     }
 
-    RenderInterfaceRef createVulkanAPI(const WindowRef& window){
-        return RenderInterfaceRef( new VulkanRenderImpl(window));
+    RenderInterfaceRef createVulkanAPI(const WindowRef& window, bool enableValidation){
+        return RenderInterfaceRef( new VulkanRenderImpl(window, enableValidation));
     }
 
     RenderInterfaceRef createOpenGLAPI(WindowRef window){

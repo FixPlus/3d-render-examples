@@ -370,7 +370,7 @@ namespace APITest {
     };
 
     using RenderInterfaceRef = std::unique_ptr<RenderInterface>;
-    RenderInterfaceRef createVulkanAPI(const WindowRef& window = nullptr);
+    RenderInterfaceRef createVulkanAPI(const WindowRef& window = nullptr, bool enableValidation = false);
     RenderInterfaceRef createOpenGLAPI(WindowRef window = nullptr);
     bool isVulkan(RenderInterface const* api);
     bool isOpenGL(RenderInterface const* api);
