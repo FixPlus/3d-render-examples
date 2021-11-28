@@ -271,7 +271,11 @@ void APITest::VulkanBuffer::push(const void *data, size_t size, size_t offset) {
                         std::to_string(size + offset - (allocationInfo.size)) +
                         " bytes off bounds");
 
-    if(allocationInfo.memoryType & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT || allocationInfo.memoryType & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT){
+    const VkPhysicalDeviceMemoryProperties *pMemProps;
+    vmaGetMemoryProperties(memoryManager->allocator(), &pMemProps);
+    auto bits = pMemProps->memoryTypes[allocationInfo.memoryType].propertyFlags;
+
+    if(bits & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT || bits & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT){
         if(allocationInfo.pMappedData){
             memcpy((char*)allocationInfo.pMappedData + offset, data, size);
         } else{
@@ -315,7 +319,7 @@ void APITest::VulkanBuffer::push(const void *data, size_t size, size_t offset) {
 
 APITest::VulkanMemoryManager::VulkanMemoryManager(APITest::VulkanRenderImpl *parent): parent_(parent) {
     VmaAllocatorCreateInfo allocatorInfo = {};
-    allocatorInfo.vulkanApiVersion = VK_API_VERSION_1_2;
+    allocatorInfo.vulkanApiVersion = VK_API_VERSION_1_0;
     allocatorInfo.physicalDevice = parent_->getVulkanDevice()->getPhysical();
     allocatorInfo.device = parent_->getVulkanDevice()->get();
     allocatorInfo.instance = parent_->getInstance();
