@@ -9,7 +9,9 @@ file(GLOB IMGUI_IMPL_SOURCES imgui_impl/*.h imgui_impl/*.cpp)
 
 file(GLOB IMGUI_SOURCE ${PROJECT_SOURCE_DIR}/external/imgui/*.cpp ${PROJECT_SOURCE_DIR}/external/imgui/*.h)
 
-if(UNIX)
+option(LINK_RENDER_API_SHARED "link shared library for APIDriver instead of static one" OFF)
+
+if(LINK_RENDER_API_SHARED AND UNIX)
   add_compile_options(-fPIC)
 endif()
 
@@ -21,8 +23,11 @@ add_library(VULKAN_IMPL_LIB OBJECT ${VULKAN_IMPL_SOURCES} ${COMMON_HEADERS})
 add_library(OPENGL_IMPL_LIB OBJECT ${OPENGL_IMPL_SOURCES} ${COMMON_HEADERS})
 add_library(IMGUI_IMPL_LIB OBJECT ${IMGUI_IMPL_SOURCES}   ${COMMON_HEADERS})
 
-add_library(${RENDER_API_LIB} ${RENDER_API_SOURCES})
-
+if(LINK_RENDER_API_SHARED)
+    add_library(${RENDER_API_LIB} SHARED ${RENDER_API_SOURCES})
+else()
+    add_library(${RENDER_API_LIB} ${RENDER_API_SOURCES})
+endif()
 
 include(../cmake/compileShaders.cmake)
 
