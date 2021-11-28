@@ -271,7 +271,11 @@ void APITest::VulkanBuffer::push(const void *data, size_t size, size_t offset) {
                         std::to_string(size + offset - (allocationInfo.size)) +
                         " bytes off bounds");
 
-    if(allocationInfo.memoryType & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT || allocationInfo.memoryType & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT){
+    const VkPhysicalDeviceMemoryProperties *pMemProps;
+    vmaGetMemoryProperties(memoryManager->allocator(), &pMemProps);
+    auto bits = pMemProps->memoryTypes[allocationInfo.memoryType].propertyFlags;
+
+    if(bits & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT || bits & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT){
         if(allocationInfo.pMappedData){
             memcpy((char*)allocationInfo.pMappedData + offset, data, size);
         } else{
