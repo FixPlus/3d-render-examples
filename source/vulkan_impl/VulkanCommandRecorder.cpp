@@ -4,7 +4,7 @@
 
 #include "VulkanCommandRecorder.h"
 #include "vulkan_impl/VulkanPipeline.h"
-#include "vulkan_impl/VulkanMemoryManagaer.h"
+#include "vulkan_impl/VulkanMemoryManager.h"
 #include "vulkan_impl/VulkanDescriptorManager.h"
 #include <cassert>
 #include <stdexcept>

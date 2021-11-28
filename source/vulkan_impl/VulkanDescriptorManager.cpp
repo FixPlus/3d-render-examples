@@ -8,7 +8,7 @@
 #include "VulkanDevice.h"
 #include "util/macro.h"
 #include "VulkanSampler.h"
-#include "VulkanMemoryManagaer.h"
+#include "VulkanMemoryManager.h"
 
 #include <cassert>
 

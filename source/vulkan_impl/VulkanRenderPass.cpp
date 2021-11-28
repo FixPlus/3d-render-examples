@@ -8,7 +8,7 @@
 #include <optional>
 #include "vulkan_impl/util/macro.h"
 #include "vulkan_impl/util/VulkanInitializers.h"
-#include "vulkan_impl/VulkanMemoryManagaer.h"
+#include "vulkan_impl/VulkanMemoryManager.h"
 #include "vulkan_impl/VulkanRenderImpl.h"
 #include "vulkan_impl/VulkanDevice.h"
 #include "vulkan_impl/VulkanSwapChain.h"

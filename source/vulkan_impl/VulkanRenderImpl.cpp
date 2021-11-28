@@ -13,7 +13,7 @@
 #include "vulkan_impl/VulkanPipeline.h"
 #include "vulkan_impl/util/macro.h"
 #include "vulkan_impl/RenderJob.h"
-#include "vulkan_impl/VulkanMemoryManagaer.h"
+#include "vulkan_impl/VulkanMemoryManager.h"
 #include "vulkan_impl/VulkanDescriptorManager.h"
 #include "vulkan_impl/VulkanSampler.h"
 #include "GuiInterface.h"

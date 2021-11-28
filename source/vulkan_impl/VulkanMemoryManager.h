@@ -2,8 +2,8 @@
 // Created by Бушев Дмитрий on 11.11.2021.
 //
 
-#ifndef RENDERAPITEST_VULKANMEMORYMANAGAER_H
-#define RENDERAPITEST_VULKANMEMORYMANAGAER_H
+#ifndef RENDERAPITEST_VULKANMEMORYMANAGER_H
+#define RENDERAPITEST_VULKANMEMORYMANAGER_H
 #include <vulkan/vulkan.h>
 #include <vma/vk_mem_alloc.h>
 #include <RenderInterface.h>
@@ -122,4 +122,4 @@ namespace APITest{
         ~VulkanMemoryManager();
     };
 }
-#endif //RENDERAPITEST_VULKANMEMORYMANAGAER_H
+#endif //RENDERAPITEST_VULKANMEMORYMANAGER_H

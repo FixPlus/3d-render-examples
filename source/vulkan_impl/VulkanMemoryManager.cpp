@@ -3,7 +3,7 @@
 //
 
 #include <vulkan_impl/util/macro.h>
-#include "VulkanMemoryManagaer.h"
+#include "VulkanMemoryManager.h"
 #include "util/VulkanInitializers.h"
 #include "VulkanRenderImpl.h"
 #include "VulkanDevice.h"
