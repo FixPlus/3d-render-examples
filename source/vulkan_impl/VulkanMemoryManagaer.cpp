@@ -315,7 +315,7 @@ void APITest::VulkanBuffer::push(const void *data, size_t size, size_t offset) {
 
 APITest::VulkanMemoryManager::VulkanMemoryManager(APITest::VulkanRenderImpl *parent): parent_(parent) {
     VmaAllocatorCreateInfo allocatorInfo = {};
-    allocatorInfo.vulkanApiVersion = VK_API_VERSION_1_2;
+    allocatorInfo.vulkanApiVersion = VK_API_VERSION_1_0;
     allocatorInfo.physicalDevice = parent_->getVulkanDevice()->getPhysical();
     allocatorInfo.device = parent_->getVulkanDevice()->get();
     allocatorInfo.instance = parent_->getInstance();
