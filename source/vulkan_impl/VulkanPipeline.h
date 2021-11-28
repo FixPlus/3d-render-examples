@@ -11,66 +11,67 @@
 
 #include <utility>
 
+namespace APITest {
 
-namespace APITest{
+class VulkanRenderImpl;
 
-    class VulkanRenderImpl;
+class VulkanPipelineManager;
 
-    class VulkanPipelineManager;
+class VulkanRenderPass;
 
-    class VulkanRenderPass;
+class VulkanPipeline : virtual public Pipeline {
+protected:
+  VulkanPipelineManager *parent_;
+  /**
+   *
+   * Single vulkan pipeline derives from render pass instance, though their
+   * layout is identical and for end user their semantics are the same. That's
+   * why they are aggregated in this class.
+   *
+   * */
+  std::map<VkRenderPass, VkPipeline> perPassMap_{};
+  VkPipelineLayout layoutHandle = VK_NULL_HANDLE;
 
-    class VulkanPipeline: virtual public Pipeline{
-    protected:
-        VulkanPipelineManager* parent_;
-        /**
-         *
-         * Single vulkan pipeline derives from render pass instance, though their layout is identical
-         * and for end user their semantics are the same. That's why they are aggregated in this class.
-         *
-         * */
-        std::map<VkRenderPass, VkPipeline> perPassMap_{};
-        VkPipelineLayout layoutHandle = VK_NULL_HANDLE;
-    public:
-        VulkanPipeline(VulkanPipelineManager* parent): parent_(parent){}
+public:
+  VulkanPipeline(VulkanPipelineManager *parent) : parent_(parent) {}
 
-        VkPipelineLayout getLayout() const { return layoutHandle;};
+  VkPipelineLayout getLayout() const { return layoutHandle; };
 
-        virtual VkPipeline get(VulkanRenderPass* pass) = 0;
+  virtual VkPipeline get(VulkanRenderPass *pass) = 0;
 
-        ~VulkanPipeline() override;
-    };
+  ~VulkanPipeline() override;
+};
 
-    class VulkanGraphicsPipeline final: public VulkanPipeline,public GraphicsPipeline{
+class VulkanGraphicsPipeline final : public VulkanPipeline,
+                                     public GraphicsPipeline {
 
-        GraphicsPipelineLayout layout_;
+  GraphicsPipelineLayout layout_;
 
-    public:
+public:
+  VulkanGraphicsPipeline(VulkanPipelineManager *parent,
+                         GraphicsPipelineLayout layout);
 
-        VulkanGraphicsPipeline(VulkanPipelineManager* parent, GraphicsPipelineLayout layout);
+  GraphicsPipelineLayout const &layout() const override { return layout_; };
 
-        GraphicsPipelineLayout const& layout() const override { return layout_;};
+  VkPipeline get(VulkanRenderPass *pass) override;
 
-        VkPipeline get(VulkanRenderPass* pass) override;
+  ~VulkanGraphicsPipeline() override;
+};
 
-        ~VulkanGraphicsPipeline() override;
-    };
+class VulkanPipelineManager final {
+  VkPipelineCache pipelineCache = VK_NULL_HANDLE;
+  VulkanRenderImpl *parent_ = nullptr;
 
+public:
+  VulkanPipelineManager(VulkanRenderImpl *parent);
 
+  GraphicsPipelineRef get(GraphicsPipelineLayout const &desc);
 
-    class VulkanPipelineManager final{
-        VkPipelineCache pipelineCache = VK_NULL_HANDLE;
-        VulkanRenderImpl* parent_ = nullptr;
-    public:
-        VulkanPipelineManager(VulkanRenderImpl* parent);
+  ~VulkanPipelineManager();
 
-        GraphicsPipelineRef get(GraphicsPipelineLayout const& desc);
+  friend class VulkanPipeline;
+  friend class VulkanGraphicsPipeline;
+};
 
-        ~VulkanPipelineManager();
-
-        friend class VulkanPipeline;
-        friend class VulkanGraphicsPipeline;
-    };
-
-}
-#endif //RENDERAPITEST_VULKANPIPELINE_H
+} // namespace APITest
+#endif // RENDERAPITEST_VULKANPIPELINE_H

@@ -6,4 +6,3 @@
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 
 #include "common.h"
-

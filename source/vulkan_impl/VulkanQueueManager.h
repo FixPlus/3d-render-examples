@@ -7,26 +7,27 @@
 
 #include "vulkan/vulkan.h"
 
-namespace APITest{
+namespace APITest {
 
-    class VulkanDevice;
+class VulkanDevice;
 
-    class VulkanQueueManager final{
-        VulkanDevice* device_;
-        VkQueue queue_;
-        VkQueue transferQueue_;
-        VkCommandPool commandPool_;
-    public:
+class VulkanQueueManager final {
+  VulkanDevice *device_;
+  VkQueue queue_;
+  VkQueue transferQueue_;
+  VkCommandPool commandPool_;
 
-        void flush(VkCommandBuffer cmdBuffer, VkQueue queue, bool free = true) const;
-        explicit VulkanQueueManager(VulkanDevice* device);
-        VkQueue getMainQueue() const { return queue_;};
-        VkQueue getTransferQueue() const { return transferQueue_;}
+public:
+  void flush(VkCommandBuffer cmdBuffer, VkQueue queue, bool free = true) const;
+  explicit VulkanQueueManager(VulkanDevice *device);
+  VkQueue getMainQueue() const { return queue_; };
+  VkQueue getTransferQueue() const { return transferQueue_; }
 
-        VkResult createPrimaryCommandBuffers(VkCommandBuffer* buffers, size_t count, bool begin = false) const;
+  VkResult createPrimaryCommandBuffers(VkCommandBuffer *buffers, size_t count,
+                                       bool begin = false) const;
 
-        void copyBuffer(VkBuffer src, VkBuffer dst, VkBufferCopy region) const;
-        ~VulkanQueueManager();
-    };
-}
-#endif //RENDERAPITEST_VULKANQUEUEMANAGER_H
+  void copyBuffer(VkBuffer src, VkBuffer dst, VkBufferCopy region) const;
+  ~VulkanQueueManager();
+};
+} // namespace APITest
+#endif // RENDERAPITEST_VULKANQUEUEMANAGER_H

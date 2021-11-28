@@ -5,77 +5,77 @@
 #include "OGLShaderManager.h"
 #include <fstream>
 
-APITest::OGLShader::OGLShader(std::string source, GLenum type): source_(source), type_(type) {
-    shader_ = glCreateShader(type);
-    auto* code = source_.data();
-    GLint length = source_.size();
-    glShaderSource(shader_, 1, &code, &length);
-    glCompileShader(shader_);
-    GLint status;
-    glGetShaderiv(shader_, GL_COMPILE_STATUS, &status);
-    if(glGetError() != GL_NO_ERROR || status == GL_FALSE) {
-        std::string log;
-        GLsizei logSize;
-        glGetShaderiv(shader_, GL_INFO_LOG_LENGTH, &logSize);
-        log.resize(logSize);
-        glGetShaderInfoLog(shader_, logSize, &logSize, log.data());
+APITest::OGLShader::OGLShader(std::string source, GLenum type)
+    : source_(source), type_(type) {
+  shader_ = glCreateShader(type);
+  auto *code = source_.data();
+  GLint length = source_.size();
+  glShaderSource(shader_, 1, &code, &length);
+  glCompileShader(shader_);
+  GLint status;
+  glGetShaderiv(shader_, GL_COMPILE_STATUS, &status);
+  if (glGetError() != GL_NO_ERROR || status == GL_FALSE) {
+    std::string log;
+    GLsizei logSize;
+    glGetShaderiv(shader_, GL_INFO_LOG_LENGTH, &logSize);
+    log.resize(logSize);
+    glGetShaderInfoLog(shader_, logSize, &logSize, log.data());
 
-        throw std::runtime_error("[OGL][ERROR]: failed to compile shader program. Shader log:\n" + log);
-    }
+    throw std::runtime_error(
+        "[OGL][ERROR]: failed to compile shader program. Shader log:\n" + log);
+  }
 }
 
-APITest::OGLShader::OGLShader(APITest::OGLShader&& another) {
-    shader_ = another.shader_;
-    source_ = another.source_;
-    type_ = another.type_;
+APITest::OGLShader::OGLShader(APITest::OGLShader &&another) {
+  shader_ = another.shader_;
+  source_ = another.source_;
+  type_ = another.type_;
 
-    another.shader_ = 0;
+  another.shader_ = 0;
 }
 
-APITest::OGLShader const& APITest::OGLShader::operator=(APITest::OGLShader&& another){
-    shader_ = another.shader_;
-    source_ = another.source_;
-    type_ = another.type_;
+APITest::OGLShader const &
+APITest::OGLShader::operator=(APITest::OGLShader &&another) {
+  shader_ = another.shader_;
+  source_ = another.source_;
+  type_ = another.type_;
 
-    another.shader_ = 0;
-    return *this;
+  another.shader_ = 0;
+  return *this;
 }
 
-APITest::OGLShader::~OGLShader(){
-    glDeleteShader(shader_);
-}
+APITest::OGLShader::~OGLShader() { glDeleteShader(shader_); }
 
-GLuint APITest::OGLShaderManager::loadShader(std::string filename, GLenum stage) {
-    std::ifstream is(filename, std::ios::binary | std::ios::in | std::ios::ate);
+GLuint APITest::OGLShaderManager::loadShader(std::string filename,
+                                             GLenum stage) {
+  std::ifstream is(filename, std::ios::binary | std::ios::in | std::ios::ate);
 
-    if (is.is_open())
-    {
-        size_t size = is.tellg();
-        is.seekg(0, std::ios::beg);
-        char* shaderCode = new char[size + 1];
-        is.read(shaderCode, size);
-        is.close();
+  if (is.is_open()) {
+    size_t size = is.tellg();
+    is.seekg(0, std::ios::beg);
+    char *shaderCode = new char[size + 1];
+    is.read(shaderCode, size);
+    is.close();
 
+    if (size == 0)
+      throw std::runtime_error(
+          "[OGL][ERROR]: shader module load failed: file is empty. Filename: " +
+          filename);
 
+    shaderCode[size] = '\0';
 
-        if(size == 0)
-            throw std::runtime_error("[OGL][ERROR]: shader module load failed: file is empty. Filename: " +
-                                     filename);
+    OGLShader shader(std::string(shaderCode), stage);
 
-        shaderCode[size] = '\0';
+    delete[] shaderCode;
 
-        OGLShader shader(std::string(shaderCode), stage);
+    auto ret = shader.get();
 
-        delete[] shaderCode;
-
-        auto ret = shader.get();
-
-        shaderMap.emplace(std::piecewise_construct, std::forward_as_tuple(ret),std::forward_as_tuple(std::move(shader)));
-        return ret;
-    }
-    else
-    {
-        throw std::runtime_error("[OGL][ERROR]: shader module load failed: could not open file. Filename: " + filename);
-    }
-
+    shaderMap.emplace(std::piecewise_construct, std::forward_as_tuple(ret),
+                      std::forward_as_tuple(std::move(shader)));
+    return ret;
+  } else {
+    throw std::runtime_error("[OGL][ERROR]: shader module load failed: could "
+                             "not open file. Filename: " +
+                             filename);
+  }
 }

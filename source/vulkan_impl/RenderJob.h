@@ -5,38 +5,39 @@
 #ifndef RENDERAPITEST_RENDERJOB_H
 #define RENDERAPITEST_RENDERJOB_H
 
-#include <vulkan/vulkan.h>
-#include <vector>
 #include "vulkan_impl/VulkanRenderPass.h"
 #include <RenderInterface.h>
 #include <map>
+#include <vector>
+#include <vulkan/vulkan.h>
 
-namespace APITest{
+namespace APITest {
 
-    class VulkanOnscreenRenderPass;
+class VulkanOnscreenRenderPass;
 
-    class VulkanCommand;
+class VulkanCommand;
 
-    class VulkanRenderImpl;
+class VulkanRenderImpl;
 
-    class RenderJob{
-        VulkanRenderImpl* parent_ = nullptr;
-        struct RenderUnit{
-            RenderPassRef pass;
-            std::vector<VkFramebuffer> frameBuffers{};
-            explicit RenderUnit(RenderPassRef renderPass): pass(std::move(renderPass)){}
-        };
-        std::vector<RenderUnit> renderSequence;
-        void compileRenderPass(RenderPassRef desc);
-    public:
+class RenderJob {
+  VulkanRenderImpl *parent_ = nullptr;
+  struct RenderUnit {
+    RenderPassRef pass;
+    std::vector<VkFramebuffer> frameBuffers{};
+    explicit RenderUnit(RenderPassRef renderPass)
+        : pass(std::move(renderPass)) {}
+  };
+  std::vector<RenderUnit> renderSequence;
+  void compileRenderPass(RenderPassRef desc);
 
-        RenderJob(VulkanRenderImpl* parent, RenderPassRef desc);
+public:
+  RenderJob(VulkanRenderImpl *parent, RenderPassRef desc);
 
-        void resetFrameBuffers();
+  void resetFrameBuffers();
 
-        void compile(int swapChainImage, VkCommandBuffer commandBuffer);
+  void compile(int swapChainImage, VkCommandBuffer commandBuffer);
 
-        ~RenderJob();
-    };
-}
-#endif //RENDERAPITEST_RENDERJOB_H
+  ~RenderJob();
+};
+} // namespace APITest
+#endif // RENDERAPITEST_RENDERJOB_H

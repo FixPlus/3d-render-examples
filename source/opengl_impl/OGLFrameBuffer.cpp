@@ -4,6 +4,6 @@
 
 #include "OGLFrameBuffer.h"
 
-void APITest::OGLFramebuffer::bind() const{
-    // nothing here yet
+void APITest::OGLFramebuffer::bind() const {
+  // nothing here yet
 }

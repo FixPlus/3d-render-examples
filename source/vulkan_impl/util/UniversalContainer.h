@@ -7,81 +7,79 @@
 
 #include <map>
 #include <stack>
-namespace APITest{
+namespace APITest {
 
-    template <typename T>
-    class KeyProducer{
-        T topKey = 0;
-        std::stack<T> freeKeys_;
-    public:
-        T nextKey(){
-            if(freeKeys_.empty()) {
-                return topKey++;
-            }
-            else{
-                auto ret = freeKeys_.top();
-                freeKeys_.pop();
-                return ret;
-            }
-        }
-        void freeKey(T key){
-            if(key == (topKey - 1))
-                topKey--;
-            else
-                freeKeys_.push(key);
-        }
-        void clear(){
-            topKey = 0;
-            while(!freeKeys_.empty()) freeKeys_.pop();
-        }
-    };
+template <typename T> class KeyProducer {
+  T topKey = 0;
+  std::stack<T> freeKeys_;
 
-    template <typename T>
-    class UniversalContainer{
-        std::map<uint32_t, T> container_;
-        KeyProducer<uint32_t> keyProducer_;
-    public:
-        template<typename ...Args>
-        uint32_t emplace(Args ...args){
-            return container_.emplace(std::piecewise_construct, keyProducer_.nextKey(), args...).first->first;
-        }
+public:
+  T nextKey() {
+    if (freeKeys_.empty()) {
+      return topKey++;
+    } else {
+      auto ret = freeKeys_.top();
+      freeKeys_.pop();
+      return ret;
+    }
+  }
+  void freeKey(T key) {
+    if (key == (topKey - 1))
+      topKey--;
+    else
+      freeKeys_.push(key);
+  }
+  void clear() {
+    topKey = 0;
+    while (!freeKeys_.empty())
+      freeKeys_.pop();
+  }
+};
 
-        T& get(uint32_t key){
-            return container_.at(key);
-        }
-        T const& get(uint32_t key) const{
-            return container_.at(key);
-        }
+template <typename T> class UniversalContainer {
+  std::map<uint32_t, T> container_;
+  KeyProducer<uint32_t> keyProducer_;
 
-        uint32_t push(T element){
-            return container_.insert({keyProducer_.nextKey(), std::forward<T>(element)}).first->first;
-        }
+public:
+  template <typename... Args> uint32_t emplace(Args... args) {
+    return container_
+        .emplace(std::piecewise_construct, keyProducer_.nextKey(), args...)
+        .first->first;
+  }
 
-        void erase(uint32_t key){
-            container_.erase(key);
-            keyProducer_.freeKey(key);
-        }
+  T &get(uint32_t key) { return container_.at(key); }
+  T const &get(uint32_t key) const { return container_.at(key); }
 
-        void clear(){
-            container_.clear();
-            keyProducer_.clear();
-        }
+  uint32_t push(T element) {
+    return container_.insert({keyProducer_.nextKey(), std::forward<T>(element)})
+        .first->first;
+  }
 
-        typename std::map<uint32_t, T>::iterator begin() noexcept{
-            return container_.begin();
-        }
+  void erase(uint32_t key) {
+    container_.erase(key);
+    keyProducer_.freeKey(key);
+  }
 
-        typename std::map<uint32_t, T>::iterator end() noexcept{
-            return container_.end();
-        }
+  void clear() {
+    container_.clear();
+    keyProducer_.clear();
+  }
 
-        typename std::map<uint32_t, T>::const_iterator begin() const noexcept{
-            return container_.begin();
-        }
+  typename std::map<uint32_t, T>::iterator begin() noexcept {
+    return container_.begin();
+  }
 
-        typename std::map<uint32_t, T>::const_iterator end() const noexcept{
-            return container_.end();
-        }
-    };
-}
-#endif //RENDERAPITEST_UNIVERSALCONTAINER_H
+  typename std::map<uint32_t, T>::iterator end() noexcept {
+    return container_.end();
+  }
+
+  typename std::map<uint32_t, T>::const_iterator begin() const noexcept {
+    return container_.begin();
+  }
+
+  typename std::map<uint32_t, T>::const_iterator end() const noexcept {
+    return container_.end();
+  }
+};
+} // namespace APITest
+#endif // RENDERAPITEST_UNIVERSALCONTAINER_H

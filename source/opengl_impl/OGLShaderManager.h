@@ -6,37 +6,38 @@
 #define RENDERAPITEST_OGLSHADERMANAGER_H
 
 #include "GL/glew.h"
-#include <string>
 #include <map>
+#include <string>
 
-namespace APITest{
+namespace APITest {
 
+class OGLShader {
+  GLuint shader_;
+  GLenum type_;
+  std::string source_;
 
+public:
+  GLuint get() const { return shader_; }
+  GLenum getType() const { return type_; }
 
-    class OGLShader{
-        GLuint shader_;
-        GLenum type_;
-        std::string source_;
-    public:
+  OGLShader(std::string source, GLenum type);
 
-        GLuint get() const { return shader_;}
-        GLenum getType() const { return type_;}
+  OGLShader(OGLShader &&another);
 
-        OGLShader(std::string source, GLenum type);
+  OGLShader const &operator=(OGLShader &&another);
 
-        OGLShader(OGLShader&& another);
+  ~OGLShader();
+};
 
-        OGLShader const& operator=(OGLShader&& another);
+class OGLShaderManager {
+  std::map<GLuint, OGLShader> shaderMap;
 
-        ~OGLShader();
-    };
-
-    class OGLShaderManager{
-        std::map<GLuint, OGLShader> shaderMap;
-    public:
-        GLuint loadShader(std::string filename, GLenum stage);
-        OGLShader const& get(GLuint shaderID) const{ return shaderMap.at(shaderID);};
-        OGLShader& get(GLuint shaderID) { return shaderMap.at(shaderID); } ;
-    };
-}
-#endif //RENDERAPITEST_OGLSHADERMANAGER_H
+public:
+  GLuint loadShader(std::string filename, GLenum stage);
+  OGLShader const &get(GLuint shaderID) const {
+    return shaderMap.at(shaderID);
+  };
+  OGLShader &get(GLuint shaderID) { return shaderMap.at(shaderID); };
+};
+} // namespace APITest
+#endif // RENDERAPITEST_OGLSHADERMANAGER_H

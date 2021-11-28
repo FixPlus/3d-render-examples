@@ -8,17 +8,17 @@
 #include "RenderInterface.h"
 #include <GL/glew.h>
 
-namespace APITest{
+namespace APITest {
 
-    class OGLSampler: public Sampler{
-        GLuint sampler_ = 0;
-    public:
+class OGLSampler : public Sampler {
+  GLuint sampler_ = 0;
 
-        explicit OGLSampler(SamplerDesc const& desc);
+public:
+  explicit OGLSampler(SamplerDesc const &desc);
 
-        void bind(GLuint texture) const;
-        ~OGLSampler() override;
-    };
+  void bind(GLuint texture) const;
+  ~OGLSampler() override;
+};
 
-}
-#endif //RENDERAPITEST_OGLSAMPLER_H
+} // namespace APITest
+#endif // RENDERAPITEST_OGLSAMPLER_H

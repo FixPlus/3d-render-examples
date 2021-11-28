@@ -5,56 +5,54 @@
 #ifndef RENDERAPITEST_OGLRENDERJOB_H
 #define RENDERAPITEST_OGLRENDERJOB_H
 
-
-#include "opengl_impl/OGLPipeline.h"
-#include "opengl_impl/OGLFrameBuffer.h"
 #include "RenderInterface.h"
+#include "opengl_impl/OGLFrameBuffer.h"
+#include "opengl_impl/OGLPipeline.h"
 
-namespace APITest{
+namespace APITest {
 
-    class OGLRenderImpl;
+class OGLRenderImpl;
 
-    class OGLRenderPass: virtual public RenderPass{
-    public:
-        virtual void enable() = 0;
-    };
-    class OGLColorPass: virtual public OGLRenderPass, virtual public ColorPass{
-    protected:
-        Image::Extents extents;
-    public:
+class OGLRenderPass : virtual public RenderPass {
+public:
+  virtual void enable() = 0;
+};
+class OGLColorPass : virtual public OGLRenderPass, virtual public ColorPass {
+protected:
+  Image::Extents extents;
 
-        Image::Extents getFramebufferExtents() const override { return extents;};
+public:
+  Image::Extents getFramebufferExtents() const override { return extents; };
+};
 
+class OGLOnscreenRenderPass final : public OGLColorPass,
+                                    public OnscreenRenderPass {
 
-    };
+public:
+  void resetWindowFrameBufferExtents(uint32_t width, uint32_t height) {
+    extents.width = width;
+    extents.height = height;
+  };
+  void setColorBufferIndex(uint32_t binding) override{/* TODO */};
+  void enableDepthBuffer(uint32_t binding) override{/* TODO */};
+  void enable() override;
+};
 
-    class OGLOnscreenRenderPass final: public OGLColorPass, public OnscreenRenderPass{
+class OGLRenderJob {
+  OGLRenderImpl *parent_;
+  struct RenderUnit {
+    RenderPassRef renderPass;
+  };
 
-    public:
-        void resetWindowFrameBufferExtents(uint32_t width, uint32_t height)
-                                    {extents.width = width; extents.height = height;};
-        void setColorBufferIndex(uint32_t binding) override { /* TODO */};
-        void enableDepthBuffer(uint32_t binding) override { /* TODO */};
-        void enable() override;
-    };
+  std::vector<RenderUnit> renderSequence;
 
-    class OGLRenderJob{
-        OGLRenderImpl* parent_;
-        struct RenderUnit{
-            RenderPassRef renderPass;
-        };
+  void compilePass(RenderPassRef node);
 
-        std::vector<RenderUnit> renderSequence;
+public:
+  OGLRenderJob(OGLRenderImpl *parent, RenderPassRef node);
 
-        void compilePass(RenderPassRef node);
-    public:
+  void complete() const;
+};
 
-        OGLRenderJob(OGLRenderImpl* parent, RenderPassRef node);
-
-
-        void complete() const;
-
-    };
-
-}
-#endif //RENDERAPITEST_OGLRENDERJOB_H
+} // namespace APITest
+#endif // RENDERAPITEST_OGLRENDERJOB_H

@@ -8,20 +8,21 @@
 #include "RenderInterface.h"
 #include <vulkan/vulkan.h>
 
-namespace APITest{
+namespace APITest {
 
-    class VulkanRenderImpl;
+class VulkanRenderImpl;
 
-    class VulkanSampler: public Sampler{
-        VulkanRenderImpl* parent_;
-        VkSampler sampler_ = VK_NULL_HANDLE;
-    public:
-        VulkanSampler(VulkanRenderImpl* parent, SamplerDesc const& desc);
+class VulkanSampler : public Sampler {
+  VulkanRenderImpl *parent_;
+  VkSampler sampler_ = VK_NULL_HANDLE;
 
-        VkSampler get() const { return sampler_;}
+public:
+  VulkanSampler(VulkanRenderImpl *parent, SamplerDesc const &desc);
 
-        ~VulkanSampler() override;
-    };
+  VkSampler get() const { return sampler_; }
 
-}
-#endif //RENDERAPITEST_VULKANSAMPLER_H
+  ~VulkanSampler() override;
+};
+
+} // namespace APITest
+#endif // RENDERAPITEST_VULKANSAMPLER_H

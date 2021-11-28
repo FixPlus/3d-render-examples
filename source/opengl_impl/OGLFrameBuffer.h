@@ -7,14 +7,15 @@
 
 #include <GL/glew.h>
 
-namespace APITest{
+namespace APITest {
 
-    class OGLFramebuffer{
-        bool onscreen = true;
-        GLuint buffer_ = 0;
-    public:
-        OGLFramebuffer() = default;
-        void bind() const;
-    };
-}
-#endif //RENDERAPITEST_OGLFRAMEBUFFER_H
+class OGLFramebuffer {
+  bool onscreen = true;
+  GLuint buffer_ = 0;
+
+public:
+  OGLFramebuffer() = default;
+  void bind() const;
+};
+} // namespace APITest
+#endif // RENDERAPITEST_OGLFRAMEBUFFER_H
