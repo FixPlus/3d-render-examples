@@ -396,24 +396,39 @@ void Examples::MMesh::eraseInstance(size_t instanceId) {
     primitive.second.second.erase(instanceId);
 }
 
-Examples::GLTFModel::GLTFModel(const char *filename, Camera &camera)
+Examples::GLTFModel::GLTFModel(std::filesystem::path const &path,
+                               Camera &camera)
     : camera_(camera) {
 
   if (!renderer_)
     throw std::runtime_error("[MODEL][ERROR] trying create model without "
                              "initializing context GLTFModel::Init()");
 
+  if (!path.has_extension())
+    throw std::runtime_error("[MODEL][ERROR] " + path.generic_string() +
+                             " file has no extension.");
+
   tinygltf::Model gltfModel;
   tinygltf::TinyGLTF gltfContext;
 
   std::string error, warning;
 
-  bool fileLoaded =
-      gltfContext.LoadASCIIFromFile(&gltfModel, &error, &warning, filename);
+  bool fileLoaded;
+
+  if (path.extension() == ".gltf")
+    fileLoaded = gltfContext.LoadASCIIFromFile(&gltfModel, &error, &warning,
+                                               path.generic_string());
+  else if (path.extension() == ".glb")
+    fileLoaded = gltfContext.LoadBinaryFromFile(&gltfModel, &error, &warning,
+                                                path.generic_string());
+  else
+    throw std::runtime_error(
+        "[MODEL][ERROR] " + path.generic_string() +
+        " file has incorrect extension. Supported extensions are: gltf, glb");
 
   if (!fileLoaded)
     throw std::runtime_error("[GLTF][ERROR] failed to load model from file " +
-                             std::string(filename) + ". " + error);
+                             path.generic_string() + ". " + error);
 
   if (!warning.empty())
     std::cout << "[GLTF][WARNING]: " << warning << std::endl;

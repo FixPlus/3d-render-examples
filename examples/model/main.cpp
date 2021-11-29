@@ -9,12 +9,28 @@
 
 EXAMPLE_MAIN_HEADER(Model)
 
+std::string filename;
+
+for (int i = 0; i < argc; ++i) {
+  std::string arg = argv[i];
+  if (arg == "-file") {
+    if (i == argc - 1)
+      continue;
+    filename = argv[i + 1];
+  }
+}
+
+if (filename.empty()) {
+  std::cout << "Model file needs to be provided: -file <filepath>" << std::endl;
+  return 0;
+}
+
 Examples::GLTFModel::Init(renderer);
 
 Camera camera(!APITest::isVulkan(renderer.get()));
 camera.allocateCameraBuffer(renderer);
 
-Examples::GLTFModel model{"model.gltf", camera};
+Examples::GLTFModel model{filename, camera};
 
 auto modelInstance = model.createNewInstance();
 

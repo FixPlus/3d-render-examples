@@ -253,8 +253,6 @@ class Model {};
         printHelp();                                                           \
         return 0;                                                              \
       }                                                                        \
-      printHelp();                                                             \
-      return 0;                                                                \
     }                                                                          \
     if (!use_vulkan && enable_validation)                                      \
       std::cout << "hint: -val option is Vulkan only." << std::endl;           \

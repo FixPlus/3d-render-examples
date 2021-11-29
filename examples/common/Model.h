@@ -8,6 +8,7 @@
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 
 #include "RenderInterface.h"
+#include <filesystem>
 #include <glm/detail/type_quat.hpp>
 #include <glm/glm.hpp>
 #include <stack>
@@ -290,7 +291,7 @@ public:
     MMaterial::InitShader(renderer);
     MaterialBase::InitMaterialBase(renderer_);
   }
-  GLTFModel(const char *filename, Camera &camera);
+  GLTFModel(std::filesystem::path const &path, Camera &camera);
 
   GLTFModelInstance createNewInstance();
 
